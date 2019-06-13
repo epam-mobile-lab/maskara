@@ -39,9 +39,6 @@ public class SimpleIterator<Element> {
         self.index = index
     }
 
-    public final func copy() -> SimpleIterator<Element> {
-        return SimpleIterator(array, index)
-    }
 }
 
 extension Array {

@@ -23,12 +23,14 @@ public final class MaskParser {
     enum Token {
         case charToken(Character)
         case numberToken
+        case letterToken
         case orOperationToken
         case optionalOperationToken
     }
 
     enum Node {
         case numberNode
+        case letterNode
         case symbolNode(Character)
         indirect case optionalNode(Node)
         indirect case orOperation(Node, Node)
@@ -48,10 +50,11 @@ public final class MaskParser {
 
     public static let defaultSymbolTokens: [Character] = ["+", "-", " ", "(", ")"]
     public static let numberToken: Character = "D"
+    public static let letterToken: Character = "X"
     public static let optionalToken: Character = "?"
     public static let orOperationToken: Character = "|"
 
-    private static let auxiliarySymbols = [MaskParser.numberToken, MaskParser.optionalToken, MaskParser.orOperationToken]
+    private static let auxiliarySymbols = [MaskParser.numberToken, MaskParser.letterToken, MaskParser.optionalToken, MaskParser.orOperationToken]
 
     private let allowedSymbolTokens: [Character]
 
@@ -82,6 +85,8 @@ public final class MaskParser {
         switch node {
         case .numberNode:
             return .number
+        case .letterNode:
+            return .letter
         case .symbolNode(let symbol):
             return .symbol(symbol)
         case .optionalNode(let node):
@@ -124,6 +129,10 @@ public final class MaskParser {
             let lastTok = stack.popLast()
             stack.append(.numberNode)
             return lastTok
+        case .letterToken:
+            let lastTok = stack.popLast()
+            stack.append(.letterNode)
+            return lastTok
         case .orOperationToken:
             guard let lastNode = stack.popLast() else {
                 throw MaskParserError.compilationError("Operator '|' should only be preceded by any valid expression")
@@ -150,6 +159,7 @@ public final class MaskParser {
     private final func parseToken(_ char: Character) throws -> Token {
         switch char {
         case MaskParser.numberToken: return .numberToken
+        case MaskParser.letterToken: return .letterToken
         case MaskParser.orOperationToken: return .orOperationToken
         case MaskParser.optionalToken: return .optionalOperationToken
         case _ where allowedSymbolTokens.contains(char): return .charToken(char)

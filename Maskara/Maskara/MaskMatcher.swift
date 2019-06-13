@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class MaskPartialMatcher {
+open class MaskMatcher {
 
     public enum MatchError: Error {
         case maskEnded(Int)
@@ -99,8 +99,10 @@ open class MaskPartialMatcher {
 
     open func isStateExtractable(state: Mask.State) -> Bool {
         switch state {
-        case .number/*, .otherExtractable */:
+        case .number, .letter:
             return true
+        case .or(let left, let right):
+            return isStateExtractable(state: left) || isStateExtractable(state: right)
         default:
             return false
         }
@@ -108,7 +110,16 @@ open class MaskPartialMatcher {
 
     // MARK: implementation
 
-    private func extract(char: Character, at index: Int) throws -> Character? {
+    private final func isAlfanumeric(state: Mask.State) -> Bool {
+        switch state {
+        case .number, .letter:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private final func extract(char: Character, at index: Int) throws -> Character? {
         switch mask.onChar(char) {
         case .ok where isStateExtractable(state: mask.getCurrentState()):
             return char
@@ -117,7 +128,7 @@ open class MaskPartialMatcher {
                 throw MatchError.maskEnded(index)
             }
         case .charMismatch(let state) where optimisticMatch:
-            if case .number = state {
+            if isAlfanumeric(state: state) {
                 throw MatchError.symbolMismatch(index, state)
             }
             return try extract(char: char, at: index)
@@ -144,7 +155,7 @@ open class MaskPartialMatcher {
             }
             throw MatchError.maskEnded(index)
         case .charMismatch(let state) where optimisticMatch:
-            if case .number = state {
+            if isAlfanumeric(state: state) {
                 throw MatchError.symbolMismatch(index, state)
             }
             if let transformedChar = result.0 {

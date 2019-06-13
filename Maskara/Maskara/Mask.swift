@@ -14,6 +14,7 @@ open class Mask {
         case nop
         case symbol(Character)
         case number
+        case letter
         indirect case or(State, State)
         case stop
     }
@@ -26,7 +27,6 @@ open class Mask {
 
     private let program: [State]
     private var programState: SimpleIterator<State>
-    private var stateStack = [SimpleIterator<State>]()
 
     init(with program: [State]) {
         self.program = program
@@ -41,21 +41,8 @@ open class Mask {
         return programState.next() ?? .stop
     }
 
-    final func pushState() {
-        stateStack.append(programState.copy())
-    }
-
-    final func popState() -> Bool {
-        guard let state = stateStack.popLast() else {
-            return false
-        }
-        self.programState = state
-        return true
-    }
-
     final func reset() {
         programState = program.getSimpleIterator()
-        stateStack = []
     }
 
     final var complete: Bool {
@@ -72,6 +59,9 @@ open class Mask {
             //The state could be changed internally during [recursive] 'evaluate', so let's get fresh one
             return (render(maskState: getCurrentState()), result)
         }
+        if isLetter(state: getCurrentState()) {
+            return (Character(char.uppercased()), result)
+        }
         return (char, result)
     }
 
@@ -81,10 +71,22 @@ open class Mask {
 
     // MARK: - implementation
 
+    private final func isLetter(state: State) -> Bool {
+        switch state {
+        case .letter:
+            return true
+        case .or(let left, let right):
+            return isLetter(state: left) || isLetter(state: right)
+        default:
+            return false
+        }
+    }
+
     private final func evaluate(maskState: State, with char: Character) -> EvaluationResult {
         switch maskState {
         case .nop: return evaluate(maskState: toNextState(), with: char)
         case .number where char.isNumber: return .ok
+        case .letter where char.isLetter && char.isASCII : return .ok
         case .symbol(let maskChar) where maskChar == char: return .ok
         case .or(let left, let right):
             let leftResult = evaluate(maskState: left, with: char)
@@ -101,7 +103,7 @@ open class Mask {
 
     private final func render(maskState: State) -> Character? {
         switch maskState {
-        case .number:
+        case .number, .letter:
             return "_" //TODO: add customization
         case .symbol(let char):
             return char

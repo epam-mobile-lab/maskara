@@ -15,11 +15,11 @@ import Quick
 class MaskaraEditorTests: QuickSpec {
     override func spec() {
 
-        let mask = "+?7|8(DDD)DDD-?DD-?DD"
-        var editor: MaskaraTextEditor!
+        let mask = "+?7|8(DDD)D|XD|XD|X-?D|XD|X-?D|XD|X"
+        var editor: MaskedTextEditor!
 
         beforeEach {
-            editor = try! MaskaraTextEditor(maskPattern: mask)
+            editor = try! MaskedTextEditor(maskPattern: mask)
         }
 
         describe("Editor") {
@@ -95,24 +95,22 @@ class MaskaraEditorTests: QuickSpec {
                 expect(editor.extractedText).to(equal("126"))
             }
 
+            it("should allow an insertion of legal letters") {
+                let mask = "+?7|8(DDD)DDD-?D|XD|X-?XX"
+                let editor = try! MaskedTextEditor(maskPattern: mask)
+
+                _ = try? editor.replace(from: 0, length: 0, replacementString: "123456aP")
+                expect(editor.text).to(equal("7(123)456AP__"))
+                let position = try? editor.replace(from: 9, length: 0, replacementString: "-")
+                expect(editor.text).to(equal("7(123)456-AP__"))
+                expect(position).to(equal(10))
+
+                expect{ try editor.replace(from: 12, length: 0, replacementString: "Ы") }.to(throwError())
+            }
+            
         }
         
         describe("String manipulation") {
-            it("should insert substring in range") {
-                let string = "1234567890"
-                expect(string.replacedSubstring(in: NSRange(location: 0, length: 2), with: "AB")).to(equal("AB34567890"))
-                expect(string.replacedSubstring(in: NSRange(location: 7, length: 3), with: "A")).to(equal("1234567A"))
-                expect(string.replacedSubstring(in: NSRange(location: 8, length: 0), with: "ABC")).to(equal("12345678ABC90"))
-                expect(string.replacedSubstring(in: NSRange(location: 8, length: 3), with: "A")).to(equal("12345678A"))
-                expect(string.replacedSubstring(in: NSRange(location: 10, length: 2), with: "ABC")).to(equal("1234567890ABC"))
-                
-                expect(string.replacedSubstring(from: 0, length: 2, with: "AB")).to(equal("AB34567890"))
-                expect(string.replacedSubstring(from: 7, length: 3, with: "A")).to(equal("1234567A"))
-                expect(string.replacedSubstring(from: 8, length: 0, with: "ABC")).to(equal("12345678ABC90"))
-                expect(string.replacedSubstring(from: 8, length: 3, with: "A")).to(equal("12345678A"))
-                expect(string.replacedSubstring(from: 10, length: 2, with: "ABC")).to(equal("1234567890ABC"))
-            }
-            
             it("should split string by insertion") {
                 let string = "1234567890"
                 
@@ -135,7 +133,6 @@ class MaskaraEditorTests: QuickSpec {
                 (left, right) = string.split(from: 8, length: 0)
                 expect(left).to(equal("12345678"))
                 expect(right).to(equal("90"))
-
             }
         }
 

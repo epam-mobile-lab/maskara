@@ -18,13 +18,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start typing" textAlignment="natural" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="XBp-VN-LJB" customClass="MaskaraTextField" customModule="Maskara">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start typing" textAlignment="natural" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="XBp-VN-LJB" customClass="MaskedTextField" customModule="Maskara">
                                 <rect key="frame" x="16" y="61" width="378" height="51"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEK-DN-Fn2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hEK-DN-Fn2">
                                 <rect key="frame" x="16" y="120" width="378" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="1Gf-Hx-Gi8"/>
@@ -34,11 +34,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlD-cw-l1s">
-                                <rect key="frame" x="16" y="187" width="378" height="50"/>
+                                <rect key="frame" x="16" y="225" width="378" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="XYw-CX-8D0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z8f-vn-4ep">
+                                <rect key="frame" x="16" y="196" width="378" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -48,11 +54,14 @@
                             <constraint firstItem="hEK-DN-Fn2" firstAttribute="leading" secondItem="XBp-VN-LJB" secondAttribute="leading" id="4rB-jm-fVU"/>
                             <constraint firstItem="xlD-cw-l1s" firstAttribute="leading" secondItem="hEK-DN-Fn2" secondAttribute="leading" id="5W4-gh-lSQ"/>
                             <constraint firstItem="4gU-0O-rw5" firstAttribute="trailing" secondItem="XBp-VN-LJB" secondAttribute="trailing" constant="20" id="H2k-Ul-RYU"/>
-                            <constraint firstItem="xlD-cw-l1s" firstAttribute="top" secondItem="hEK-DN-Fn2" secondAttribute="bottom" constant="41" id="IPA-SP-4m9"/>
+                            <constraint firstItem="xlD-cw-l1s" firstAttribute="top" secondItem="Z8f-vn-4ep" secondAttribute="bottom" constant="8" id="Mgv-fu-VUo"/>
                             <constraint firstItem="xlD-cw-l1s" firstAttribute="trailing" secondItem="hEK-DN-Fn2" secondAttribute="trailing" id="UnJ-q5-hBf"/>
                             <constraint firstItem="XBp-VN-LJB" firstAttribute="top" secondItem="4gU-0O-rw5" secondAttribute="top" constant="41" id="ZiJ-eZ-egM"/>
+                            <constraint firstItem="Z8f-vn-4ep" firstAttribute="leading" secondItem="hEK-DN-Fn2" secondAttribute="leading" id="co5-th-2qj"/>
+                            <constraint firstItem="Z8f-vn-4ep" firstAttribute="trailing" secondItem="hEK-DN-Fn2" secondAttribute="trailing" id="czh-i4-Yu2"/>
                             <constraint firstItem="hEK-DN-Fn2" firstAttribute="trailing" secondItem="XBp-VN-LJB" secondAttribute="trailing" id="grt-Qc-R6q"/>
                             <constraint firstItem="XBp-VN-LJB" firstAttribute="leading" secondItem="4gU-0O-rw5" secondAttribute="leading" constant="16" id="pHr-17-T4c"/>
+                            <constraint firstItem="Z8f-vn-4ep" firstAttribute="top" secondItem="hEK-DN-Fn2" secondAttribute="bottom" constant="50" id="sZq-HW-ZjY"/>
                             <constraint firstItem="hEK-DN-Fn2" firstAttribute="top" secondItem="XBp-VN-LJB" secondAttribute="bottom" constant="8" id="xr8-8k-hUD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4gU-0O-rw5"/>

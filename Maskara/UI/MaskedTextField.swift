@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-open class MaskaraTextField: UITextField, UITextFieldDelegate {
+open class MaskedTextField: UITextField, UITextFieldDelegate {
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -28,7 +28,7 @@ open class MaskaraTextField: UITextField, UITextFieldDelegate {
 
     open var maskPattern: String? {
         didSet {
-            guard let maskPattern = maskPattern, let editor = try? MaskaraTextEditor(maskPattern: maskPattern) else {
+            guard let maskPattern = maskPattern, let editor = try? MaskedTextEditor(maskPattern: maskPattern) else {
                 self.editor = nil
                 return
             }
@@ -36,7 +36,7 @@ open class MaskaraTextField: UITextField, UITextFieldDelegate {
         }
     }
 
-    private var editor: MaskaraTextEditor?
+    private var editor: MaskedTextEditor?
     public private(set) var extractedText: String = ""
 //    private(set) var partial: Bool = true
 

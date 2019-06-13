@@ -11,7 +11,7 @@ import Maskara
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var maskara: MaskaraTextField!
+    @IBOutlet weak var maskara: MaskedTextField!
     @IBOutlet weak var result: UILabel!
     @IBOutlet weak var maskField: UILabel!
 
@@ -19,7 +19,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         maskara.delegate = self
-        maskara.maskPattern = "+?7|8(DDD)DDD-| ?DD-| ?DD"
+        maskara.maskPattern = "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X"
         maskField.text = maskara.maskPattern
     }
 

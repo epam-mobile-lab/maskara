@@ -12,13 +12,13 @@
 		0C7B4CD422A968EC00E6DE0B /* Maskara.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C7B4CC622A968EC00E6DE0B /* Maskara.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0C7B4CE022A96B9900E6DE0B /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B4CDE22A96B9900E6DE0B /* Quick.framework */; };
 		0C7B4CE122A96B9900E6DE0B /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B4CDF22A96B9900E6DE0B /* Nimble.framework */; };
-		0C7B4CE422A96D3500E6DE0B /* Maskara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CE322A96D3500E6DE0B /* Maskara.swift */; };
+		0C7B4CE422A96D3500E6DE0B /* MaskMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CE322A96D3500E6DE0B /* MaskMatcher.swift */; };
 		0C7B4CE622AAA0EF00E6DE0B /* Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CE522AAA0EF00E6DE0B /* Mask.swift */; };
 		0C7B4CE822AAA16200E6DE0B /* Array+SimpleIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CE722AAA16200E6DE0B /* Array+SimpleIterator.swift */; };
 		0C7B4CEA22AAA19B00E6DE0B /* TextualMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CE922AAA19B00E6DE0B /* TextualMask.swift */; };
-		0C7B4CEC22AE72C700E6DE0B /* MaskaraTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CEB22AE72C700E6DE0B /* MaskaraTextField.swift */; };
-		0CDBC7EC22AEC974005F984E /* String+NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7EB22AEC974005F984E /* String+NSRange.swift */; };
-		0CDBC7EE22AFDDC1005F984E /* MaskaraTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7ED22AFDDC1005F984E /* MaskaraTextEditor.swift */; };
+		0C7B4CEC22AE72C700E6DE0B /* MaskedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4CEB22AE72C700E6DE0B /* MaskedTextField.swift */; };
+		0CDBC7EC22AEC974005F984E /* StringManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7EB22AEC974005F984E /* StringManipulation.swift */; };
+		0CDBC7EE22AFDDC1005F984E /* MaskedTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */; };
 		0CDBC7F022AFFA40005F984E /* MaskaraEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7EF22AFFA40005F984E /* MaskaraEditorTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,13 +41,13 @@
 		0C7B4CD322A968EC00E6DE0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C7B4CDE22A96B9900E6DE0B /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		0C7B4CDF22A96B9900E6DE0B /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		0C7B4CE322A96D3500E6DE0B /* Maskara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Maskara.swift; sourceTree = "<group>"; };
+		0C7B4CE322A96D3500E6DE0B /* MaskMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskMatcher.swift; sourceTree = "<group>"; };
 		0C7B4CE522AAA0EF00E6DE0B /* Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mask.swift; sourceTree = "<group>"; };
 		0C7B4CE722AAA16200E6DE0B /* Array+SimpleIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SimpleIterator.swift"; sourceTree = "<group>"; };
 		0C7B4CE922AAA19B00E6DE0B /* TextualMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextualMask.swift; sourceTree = "<group>"; };
-		0C7B4CEB22AE72C700E6DE0B /* MaskaraTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskaraTextField.swift; sourceTree = "<group>"; };
-		0CDBC7EB22AEC974005F984E /* String+NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSRange.swift"; sourceTree = "<group>"; };
-		0CDBC7ED22AFDDC1005F984E /* MaskaraTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskaraTextEditor.swift; sourceTree = "<group>"; };
+		0C7B4CEB22AE72C700E6DE0B /* MaskedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedTextField.swift; sourceTree = "<group>"; };
+		0CDBC7EB22AEC974005F984E /* StringManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManipulation.swift; sourceTree = "<group>"; };
+		0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedTextEditor.swift; sourceTree = "<group>"; };
 		0CDBC7EF22AFFA40005F984E /* MaskaraEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskaraEditorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,9 +95,9 @@
 		0C7B4CC522A968EC00E6DE0B /* Maskara */ = {
 			isa = PBXGroup;
 			children = (
-				0C7B4CE322A96D3500E6DE0B /* Maskara.swift */,
 				0C7B4CE522AAA0EF00E6DE0B /* Mask.swift */,
 				0C7B4CE922AAA19B00E6DE0B /* TextualMask.swift */,
+				0C7B4CE322A96D3500E6DE0B /* MaskMatcher.swift */,
 				0C7B4CE722AAA16200E6DE0B /* Array+SimpleIterator.swift */,
 				0C7B4CC622A968EC00E6DE0B /* Maskara.h */,
 				0C7B4CC722A968EC00E6DE0B /* Info.plist */,
@@ -127,9 +127,9 @@
 		0CDBC7EA22AE809F005F984E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				0CDBC7EB22AEC974005F984E /* String+NSRange.swift */,
-				0CDBC7ED22AFDDC1005F984E /* MaskaraTextEditor.swift */,
-				0C7B4CEB22AE72C700E6DE0B /* MaskaraTextField.swift */,
+				0CDBC7EB22AEC974005F984E /* StringManipulation.swift */,
+				0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */,
+				0C7B4CEB22AE72C700E6DE0B /* MaskedTextField.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -266,13 +266,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CDBC7EE22AFDDC1005F984E /* MaskaraTextEditor.swift in Sources */,
+				0CDBC7EE22AFDDC1005F984E /* MaskedTextEditor.swift in Sources */,
 				0C7B4CE822AAA16200E6DE0B /* Array+SimpleIterator.swift in Sources */,
-				0C7B4CE422A96D3500E6DE0B /* Maskara.swift in Sources */,
+				0C7B4CE422A96D3500E6DE0B /* MaskMatcher.swift in Sources */,
 				0C7B4CE622AAA0EF00E6DE0B /* Mask.swift in Sources */,
 				0C7B4CEA22AAA19B00E6DE0B /* TextualMask.swift in Sources */,
-				0C7B4CEC22AE72C700E6DE0B /* MaskaraTextField.swift in Sources */,
-				0CDBC7EC22AEC974005F984E /* String+NSRange.swift in Sources */,
+				0C7B4CEC22AE72C700E6DE0B /* MaskedTextField.swift in Sources */,
+				0CDBC7EC22AEC974005F984E /* StringManipulation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

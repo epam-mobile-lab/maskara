@@ -8,9 +8,9 @@
 
 import Foundation
 
-open class MaskaraTextEditor {
+open class MaskedTextEditor {
 
-    public private(set) var matcher: MaskPartialMatcher
+    public private(set) var matcher: MaskMatcher
     public private(set) var textualMask: TextualMask
 
     public private(set) var text: String = ""
@@ -28,7 +28,7 @@ open class MaskaraTextEditor {
 
     public init(maskPattern: String) throws {
         self.textualMask = try TextualMask(with: maskPattern)
-        self.matcher = MaskPartialMatcher(mask: self.textualMask, options: [.optimisticMatch])
+        self.matcher = MaskMatcher(mask: self.textualMask, options: [.optimisticMatch])
         self.text = matcher.renderMask()
     }
 

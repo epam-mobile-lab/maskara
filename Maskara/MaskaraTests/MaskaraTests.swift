@@ -17,7 +17,7 @@ override func spec() {
 
     describe("Mask") {
         it("should evaluate sample using optional symbols") {
-            let matcher = MaskPartialMatcher(mask: Mask(with: [.or(.symbol("+"), .nop), .number, .number, .number, .or(.symbol("-"), .nop), .number, .number]))
+            let matcher = MaskMatcher(mask: Mask(with: [.or(.symbol("+"), .nop), .number, .number, .number, .or(.symbol("-"), .nop), .number, .number]))
             expect{ try matcher.match(sample: "12345") }.toNot(throwError())
             expect{ try matcher.match(sample: "+12345") }.toNot(throwError())
             expect{ try matcher.match(sample: "123-45") }.toNot(throwError())
@@ -44,7 +44,7 @@ override func spec() {
             let program: [Mask.State] =
                 [.or(.symbol("+"), .nop), .or(.symbol("7"), .symbol("8")), .number, .number, .number, .or(.symbol("-"), .nop), .number, .number, .or(.symbol("-"), .nop), .number, .number]
 
-            let matcher = MaskPartialMatcher(mask: Mask(with: program))
+            let matcher = MaskMatcher(mask: Mask(with: program))
 
             expect{ try matcher.match(sample: "+7123-45-67") }.toNot(throwError())
         }
@@ -56,7 +56,7 @@ override func spec() {
         }
 
         it("should evaluate sample") {
-            let matcher = MaskPartialMatcher(mask: try! TextualMask(with: "+?DDD-?DD"))
+            let matcher = MaskMatcher(mask: try! TextualMask(with: "+?DDD-?DD"))
 
             expect{ try matcher.match(sample: "12345") }.toNot(throwError())
             expect{ try matcher.match(sample: "+12345") }.toNot(throwError())
@@ -70,7 +70,7 @@ override func spec() {
             let mask = "+?7|8-| ?DDD-| ?DD-| ?DD"
             expect{ _ = try TextualMask(with: mask) }.toNot(throwError())
 
-            let matcher = MaskPartialMatcher(mask: try! TextualMask(with: mask))
+            let matcher = MaskMatcher(mask: try! TextualMask(with: mask))
 
             expect{ try matcher.match(sample: "+7123-45-67") }.toNot(throwError())
             expect{ try matcher.match(sample: "+7123 45 67") }.toNot(throwError())
@@ -91,7 +91,7 @@ override func spec() {
 
             expect{ _ = try TextualMask(with: extMask) }.toNot(throwError())
 
-            let advMatcher = MaskPartialMatcher(mask: try! TextualMask(with: extMask))
+            let advMatcher = MaskMatcher(mask: try! TextualMask(with: extMask))
             expect{ try advMatcher.match(sample: "+") }.toNot(throwError())
             expect{ try advMatcher.match(sample: "8") }.toNot(throwError())
             expect{ try advMatcher.match(sample: "7") }.toNot(throwError())
@@ -104,7 +104,7 @@ override func spec() {
             let mask = "+7|8(DDD)DDD-DD-DD"
             expect{ _ = try TextualMask(with: mask) }.toNot(throwError())
 
-            let matcher = MaskPartialMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
+            let matcher = MaskMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
 
             expect{ try matcher.match(sample: "9211234567") }.toNot(throwError())
             expect{ try matcher.match(sample: "89211234567") }.toNot(throwError())
@@ -123,7 +123,7 @@ override func spec() {
             let allowedSymbolTokens: [Character] = ["$", ".", " ", "-", "+"]
             expect{ try? MaskParser(pattern: "-|+?$DDD ?DDD.DD?", allowedSymbolTokens: allowedSymbolTokens) }.toNot(throwError())
             let moneyMaskParser = try! MaskParser(pattern: "-|+?$DDD ?DDD.|D?D?D?", allowedSymbolTokens: allowedSymbolTokens)
-            let matcher = MaskPartialMatcher(mask: Mask(with: moneyMaskParser.program), options: [.optimisticMatch])
+            let matcher = MaskMatcher(mask: Mask(with: moneyMaskParser.program), options: [.optimisticMatch])
 
             expect{ try matcher.match(sample: "$123 123.11") }.toNot(throwError())
             expect{ try matcher.match(sample: "$123123.1") }.toNot(throwError())
@@ -135,11 +135,33 @@ override func spec() {
         }
     }
 
+    describe("Letters") {
+        it("should be able to handle letters in mask") {
+            let mask = "+7|8(DDD)DDD-?D|XD|X-?D|XD|X"
+            expect{ _ = try TextualMask(with: mask) }.toNot(throwError())
+
+            let matcher = MaskMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
+
+            expect{ try matcher.match(sample: "9211234567") }.toNot(throwError())
+            expect{ try matcher.match(sample: "89211234567") }.toNot(throwError())
+            expect{ try matcher.match(sample: "+77211234567") }.toNot(throwError())
+
+            expect{ try matcher.match(sample: "921123MYAP") }.toNot(throwError())
+            expect{ try matcher.match(sample: "892112345AP") }.toNot(throwError())
+            expect{ try matcher.match(sample: "+7721123MY67") }.toNot(throwError())
+
+            expect{ try matcher.match(sample: "+772112MYAPP") }.to(throwError())
+
+            let result = try? matcher.match(sample: "721123M")
+            expect(result).to(equal(.partial))
+        }
+    }
+
     describe("Transform") {
         context("should modify sample by mask rules") {
             let mask = "+?7|8(DDD)DDD-DD-DD"
             it("with optimistic match") {
-                let matcher = MaskPartialMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
+                let matcher = MaskMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
 
                 expect(matcher.renderMask(resetMask: false)).to(equal("7(___)___-__-__"))
 
@@ -154,7 +176,7 @@ override func spec() {
             }
 
             it("without optimistic match") {
-                let parser2 = MaskPartialMatcher(mask: try! TextualMask(with: mask))
+                let parser2 = MaskMatcher(mask: try! TextualMask(with: mask))
                 expect{ try parser2.transform(sample: "9211") }.to(throwError())
                 expect{ try parser2.transform(sample: "+7(921)1") }.toNot(throwError())
                 expect{ try parser2.transform(sample: "8(921)1") }.toNot(throwError())
@@ -165,7 +187,7 @@ override func spec() {
     describe("Extract") {
         it("should be able to filter meanungful data from sample by mask") {
             let mask = "+?7|8(DDD)DDD-| ?DD-| ?DD"
-            let matcher = MaskPartialMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
+            let matcher = MaskMatcher(mask: try! TextualMask(with: mask), options: [.optimisticMatch])
 
             var extract = try? matcher.extract(from: "+7(123)456-78-90")
             expect(extract).to(beExtractComplete("1234567890"))
@@ -181,10 +203,9 @@ override func spec() {
 }
 }
 
-
 // MARK: - Customization
 
-private func beExtractComplete(_ test: String = "") -> Predicate<MaskPartialMatcher.ExtractResult> {
+private func beExtractComplete(_ test: String = "") -> Predicate<MaskMatcher.ExtractResult> {
     return Predicate.define("be <complete(\(test))>") { expression, message in
         if let actual = try expression.evaluate(), case .complete(let extract) = actual, test == extract {
             return PredicateResult(status: .matches, message: message)
@@ -193,7 +214,7 @@ private func beExtractComplete(_ test: String = "") -> Predicate<MaskPartialMatc
     }
 }
 
-private func beExtractPartial(_ test: String = "") -> Predicate<MaskPartialMatcher.ExtractResult> {
+private func beExtractPartial(_ test: String = "") -> Predicate<MaskMatcher.ExtractResult> {
     return Predicate.define("be <partial(\(test))>") { expression, message in
         if let actual = try expression.evaluate(), case .partial(let extract) = actual, test == extract {
             return PredicateResult(status: .matches, message: message)

@@ -1,8 +1,8 @@
 # Maskara library
-Maskara library provides an ability to control user input using generalized masked editor.
+Maskara library provides MaskedTextField class, subclass of UITextField which allows to control user input with generalized masked editor.
 
 ## Examples
-The project contains a bunch of tests illustrating underlying concept as well as example project: an iOS app, which demonstrates masked editing coupled with UITextField.
+The project contains a bunch of unit tests illustrating underlying concept as well as example project: an iOS app, which demonstrates masked editing coupled with UITextField.
 
 ### Advanced text matching
 ```swift
@@ -61,5 +61,14 @@ For example, `+?7|8(DDD)DDD-| ?DD-| ?D|XD|X` will match following sample strings
 `MaskedTextField: UITextField` contains an instance of `MaskedTextEditor` and supports strightforward interface for editing and getting data. Please refer the example included for the details.
 
 ## Installation
+
+### Cocoapods
+```
+  pod 'Maskara', '~> 1.0.0'
+```
+### Carthage
+```
+github "epam-mobile-lab/maskara" == 1.0.0
+```
 
 

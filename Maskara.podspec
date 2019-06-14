@@ -11,8 +11,9 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
   s.author       = #{ "[author]" => "[email]" }
   s.platform     = :ios, :osx
+  s.swift_version = "4.2"
 
-  s.ios.deployment_target = "10.0"
+  s.ios.deployment_target = "10.1"
    
   s.source       = { :git => "https://github.com/epam-mobile-lab/maskara.git", :tag => "1.0.0" }
   s.source_files  = "Maskara", "Maskara/**/*.{h,swift}"

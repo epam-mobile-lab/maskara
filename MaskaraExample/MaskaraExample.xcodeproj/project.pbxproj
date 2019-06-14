@@ -77,10 +77,10 @@
 		0C7B4CED22AE771300E6DE0B = {
 			isa = PBXGroup;
 			children = (
-				0C7B4D2222AE792B00E6DE0B /* Maskara.framework */,
 				0C7B4CF822AE771300E6DE0B /* MaskaraExample */,
 				0C7B4D0D22AE771900E6DE0B /* MaskaraExampleTests */,
 				0C7B4CF722AE771300E6DE0B /* Products */,
+				0C7B4D2222AE792B00E6DE0B /* Maskara.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -383,7 +383,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53APD5F9YQ;
 				INFOPLIST_FILE = MaskaraExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -402,7 +402,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53APD5F9YQ;
 				INFOPLIST_FILE = MaskaraExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

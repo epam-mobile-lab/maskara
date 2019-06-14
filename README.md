@@ -1,8 +1,8 @@
 # Maskara library
-Maskara library provides an ability to control user input using generalized masked editor.
+Maskara library provides MaskedTextField class, subclass of UITextField which allows to control user input with generalized masked editor.
 
 ## Examples
-The project contains a bunch of tests illustrating underlying concept as well as example project: an iOS app, which demonstrates masked editing coupled with UITextField.
+The project contains a bunch of unit tests illustrating underlying concept as well as example project: an iOS app, which demonstrates masked editing coupled with UITextField.
 
 ### Advanced text matching
 ```swift
@@ -21,7 +21,7 @@ matchResult = try matcher.match(sample: "$123(123).11") // illegal, exception th
 ### Text editor ready to be used in UITextField
 ```swift
 let mask = "+?7|8(DDD)DDD-?DD-?DD"
-var editor = try MaskaedTextEditor(maskPattern: mask)
+var editor = try MaskedTextEditor(maskPattern: mask)
 let position = try editor.replace(from: 0, length: 0, replacementString: "+7(123)456-78-90")
 editor.text // "+7(123)456-78-90"
 editor.extractedText // "1234567890"
@@ -40,11 +40,12 @@ Textual mask allows to create an object of `Mask` class using textual representa
 
 Allowed mask symbols:
 - `D` - numeric
+- `X` - letter
 - `?` - being preceded by any other valid expression makes it optional
 - `|` - being placed between two valid expressions makes them conditional. If left part does not match a character tested, there will be right part tested. Otherwise, the result of evaluation of the left part will be returned.
 - Symbols set as `allowedSymbolTokens` initializer parameter will be treated “as is”. Default set is `["+", "-", " ", "(", ")"]`.
 
-For example, `+?7|8(DDD)DDD-| ?DD-| ?DD` will match following sample strings: `+7(123)456-78-90`, `8(123)456 78 90` and `7(123)4567890`.
+For example, `+?7|8(DDD)DDD-| ?DD-| ?D|XD|X` will match following sample strings: `+7(123)456-78-90`, `8(123)456 78 90`, `7(123)4567890` and `7(123)45678-OK`.
 
 ### MaskMatcher class
 `MaskMatcher` class provides high level service functions for handling samples using mask:
@@ -54,7 +55,20 @@ For example, `+?7|8(DDD)DDD-| ?DD-| ?DD` will match following sample strings: `+
 
 ## User interface
 ### MaskedTextEditor class
-`MaskedTextEditor` incapsulates all the details of editing the text field being controlled by mask. It does not depend on any UI framework, but It has interface which is suited for integration with UIKit (at the moment).
+`MaskedTextEditor` incapsulates all the details of editing the text field being controlled by mask. It does not depend on any UI framework, but it has interface which is suited for integration with UIKit (at the moment).
 
 ### MaskedTextField class
-`MaskedTextField: UITextField`  contains an instance of `MaskedTextEditor` and supports strightforward interface for editing and getting data. Please refer the example included for the details.
+`MaskedTextField: UITextField` contains an instance of `MaskedTextEditor` and supports strightforward interface for editing and getting data. Please refer the example included for the details.
+
+## Installation
+
+### Cocoapods
+```
+  pod 'Maskara', '~> 1.0.0'
+```
+### Carthage
+```
+github "epam-mobile-lab/maskara" == 1.0.0
+```
+
+

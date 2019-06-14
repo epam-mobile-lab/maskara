@@ -15,7 +15,7 @@ import Quick
 class MaskaraEditorTests: QuickSpec {
     override func spec() {
 
-        let mask = "+?7|8(DDD)D|XD|XD|X-?D|XD|X-?D|XD|X"
+        let mask = "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X"
         var editor: MaskedTextEditor!
 
         beforeEach {
@@ -78,7 +78,15 @@ class MaskaraEditorTests: QuickSpec {
                 expect(editor.text).to(equal("7(123)456-78__"))
                 expect(position).to(equal(10))
             }
-            
+
+            it("should allow a copy-paste replacement") {
+                _ = try? editor.replace(from: 0, length: 0, replacementString: "9211234567")
+                expect(editor.text).to(equal("7(921)1234567"))
+                let position = try? editor.replace(from: 9, length: 2, replacementString: "00")
+                expect(editor.text).to(equal("7(921)1230067"))
+                expect(position).to(equal(11))
+            }
+
             it("should not allow illegal symbols") {
                 let position = try! editor.replace(from: 0, length: 0, replacementString: "1")
                 expect(editor.text).to(equal("7(1__)_______"))
@@ -89,10 +97,13 @@ class MaskaraEditorTests: QuickSpec {
             it("should allow extraction") {
                 _ = try? editor.replace(from: 0, length: 0, replacementString: "123456")
                 expect(editor.text).to(equal("7(123)456____"))
-                expect(editor.extractedText).to(equal("123456"))
+                expect(editor.extractedText).to(beExtractPartial("123456"))
                 _ = try! editor.replace(from: 4, length: 4, replacementString: "")
                 expect(editor.text).to(equal("7(126)_______"))
-                expect(editor.extractedText).to(equal("126"))
+                expect(editor.extractedText).to(beExtractPartial("126"))
+                _ = try? editor.replace(from: 0, length: 0, replacementString: "1234567890")
+                expect(editor.text).to(equal("7(123)4567890"))
+                expect(editor.extractedText).to(beExtractComplete("1234567890"))
             }
 
             it("should allow an insertion of legal letters") {
@@ -107,7 +118,13 @@ class MaskaraEditorTests: QuickSpec {
 
                 expect{ try editor.replace(from: 12, length: 0, replacementString: "Ы") }.to(throwError())
             }
-            
+
+            it("should allow extraction of a portion of the editor text") {
+                _ = try? editor.replace(from: 0, length: 0, replacementString: "921123-45-67")
+                expect(editor.text).to(equal("7(921)123-45-67"))
+                expect(editor.extractedText(from: 0, length: 6)).to(equal("921"))
+                expect(editor.extractedText(from: 8, length: 4)).to(equal("345"))
+            }
         }
         
         describe("String manipulation") {

@@ -8,22 +8,22 @@
 
 import Foundation
 
+public enum MatchResult {
+    case partial
+    case complete
+}
+
+public enum ExtractResult {
+    case partial(String)
+    case complete(String)
+}
+
 open class MaskMatcher {
 
     public enum MatchError: Error {
         case maskEnded(Int)
         case symbolMismatch(Int, Mask.State)
         case transformFailed(Int)
-    }
-
-    public enum MatchResult {
-        case partial
-        case complete
-    }
-
-    public enum ExtractResult {
-        case partial(String)
-        case complete(String)
     }
 
     public enum MatchOption {

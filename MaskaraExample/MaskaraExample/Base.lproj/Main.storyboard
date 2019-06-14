@@ -70,6 +70,7 @@
                         <outlet property="maskField" destination="hEK-DN-Fn2" id="b7C-4k-L6x"/>
                         <outlet property="maskara" destination="XBp-VN-LJB" id="0ZS-Dc-QHa"/>
                         <outlet property="result" destination="xlD-cw-l1s" id="o2R-tx-I37"/>
+                        <outlet property="resultLabel" destination="Z8f-vn-4ep" id="aJt-mi-NQi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aar-h3-9cg" userLabel="First Responder" sceneMemberID="firstResponder"/>

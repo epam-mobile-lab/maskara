@@ -20,6 +20,7 @@
 		0CDBC7EC22AEC974005F984E /* StringManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7EB22AEC974005F984E /* StringManipulation.swift */; };
 		0CDBC7EE22AFDDC1005F984E /* MaskedTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */; };
 		0CDBC7F022AFFA40005F984E /* MaskaraEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7EF22AFFA40005F984E /* MaskaraEditorTests.swift */; };
+		0CDBC7F222B3F66A005F984E /* MaskaraTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDBC7F122B3F66A005F984E /* MaskaraTestUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		0CDBC7EB22AEC974005F984E /* StringManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManipulation.swift; sourceTree = "<group>"; };
 		0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedTextEditor.swift; sourceTree = "<group>"; };
 		0CDBC7EF22AFFA40005F984E /* MaskaraEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskaraEditorTests.swift; sourceTree = "<group>"; };
+		0CDBC7F122B3F66A005F984E /* MaskaraTestUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskaraTestUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			children = (
 				0C7B4CD122A968EC00E6DE0B /* MaskaraTests.swift */,
 				0CDBC7EF22AFFA40005F984E /* MaskaraEditorTests.swift */,
+				0CDBC7F122B3F66A005F984E /* MaskaraTestUtil.swift */,
 				0C7B4CD322A968EC00E6DE0B /* Info.plist */,
 			);
 			path = MaskaraTests;
@@ -282,6 +285,7 @@
 			files = (
 				0C7B4CD222A968EC00E6DE0B /* MaskaraTests.swift in Sources */,
 				0CDBC7F022AFFA40005F984E /* MaskaraEditorTests.swift in Sources */,
+				0CDBC7F222B3F66A005F984E /* MaskaraTestUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

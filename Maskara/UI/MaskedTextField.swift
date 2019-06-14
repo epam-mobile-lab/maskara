@@ -37,8 +37,12 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
     }
 
     private var editor: MaskedTextEditor?
-    public private(set) var extractedText: String = ""
-//    private(set) var partial: Bool = true
+
+    public var extractedText: ExtractResult? {
+        return editor?.extractedText
+    }
+
+    public var matchErrorHandler: ((Error)->Void)?
 
     override open var delegate: UITextFieldDelegate? {
         get { return internalDelegate }
@@ -101,6 +105,27 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
 
     // MARK: UITextFieldDelegate
 
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let editor = editor else {
+            return false
+        }
+
+        do {
+            let cursorPosition = try editor.replace(from: range.location, length: range.length, replacementString: string)
+            text = editor.text
+        
+            if let cursorPosition = position(from: beginningOfDocument, offset: cursorPosition) {
+                selectedTextRange = textRange(from: cursorPosition, to: cursorPosition)
+            }
+        } catch let error {
+            matchErrorHandler?(error)
+            return false
+        }
+
+        _ = internalDelegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string)
+        return false
+    }
+
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return internalDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
@@ -119,29 +144,6 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         internalDelegate?.textFieldDidEndEditing?(textField, reason: reason)
-    }
-
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let editor = editor else {
-            return false
-        }
-
-        do {
-            let cursorPosition = try editor.replace(from: range.location, length: range.length, replacementString: string)
-            text = editor.text
-        
-            if let cursorPosition = position(from: beginningOfDocument, offset: cursorPosition) {
-                selectedTextRange = textRange(from: cursorPosition, to: cursorPosition)
-            }
-
-            extractedText = editor.extractedText
-        } catch {
-            //TODO: propagate errors here
-            return false
-        }
-
-        _ = internalDelegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string)
-        return false
     }
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {

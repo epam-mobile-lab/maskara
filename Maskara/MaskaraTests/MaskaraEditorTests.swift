@@ -97,10 +97,13 @@ class MaskaraEditorTests: QuickSpec {
             it("should allow extraction") {
                 _ = try? editor.replace(from: 0, length: 0, replacementString: "123456")
                 expect(editor.text).to(equal("7(123)456____"))
-                expect(editor.extractedText).to(equal("123456"))
+                expect(editor.extractedText).to(beExtractPartial("123456"))
                 _ = try! editor.replace(from: 4, length: 4, replacementString: "")
                 expect(editor.text).to(equal("7(126)_______"))
-                expect(editor.extractedText).to(equal("126"))
+                expect(editor.extractedText).to(beExtractPartial("126"))
+                _ = try? editor.replace(from: 0, length: 0, replacementString: "1234567890")
+                expect(editor.text).to(equal("7(123)4567890"))
+                expect(editor.extractedText).to(beExtractComplete("1234567890"))
             }
 
             it("should allow an insertion of legal letters") {

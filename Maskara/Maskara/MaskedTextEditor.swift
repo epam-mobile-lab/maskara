@@ -16,14 +16,11 @@ open class MaskedTextEditor {
     public private(set) var text: String = ""
     public private(set) var transformedText: String = ""
     
-    public var extractedText: String {
+    public var extractedText: ExtractResult? {
         guard let extractResult = try? matcher.extract(from: transformedText) else {
-            return ""
+            return nil
         }
-        switch extractResult {
-            case .complete(let extract), .partial(let extract):
-                return extract
-        }
+        return extractResult
     }
 
     public init(maskPattern: String) throws {

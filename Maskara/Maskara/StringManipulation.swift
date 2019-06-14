@@ -23,4 +23,13 @@ extension String {
         let rightBound = index(startIndex, offsetBy: min(upperBound, count))
         return String(self[..<rightBound])
     }
+
+    public func substring(from location: Int, length: Int) -> String {
+        let lowerBound = min(location, location + length)
+        let upperBound = max(location, location + length)
+
+        let leftBound = index(startIndex, offsetBy: min(count, lowerBound))
+        let rightBound = index(startIndex, offsetBy: min(upperBound, count))
+        return String(self[leftBound..<rightBound])
+    }
 }

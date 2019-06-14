@@ -36,6 +36,7 @@ open class MaskedTextEditor {
 
         let (left, right) = transformedText.split(from: position, length: length)
 
+        // Dry run on the left side (including part which is about to be changed),
         // should always be ok since 'left' is already in text, so just move state to a proper position
         _ = try matcher.match(sample: transformedText.left(upperBound: position + length))
 
@@ -58,6 +59,18 @@ open class MaskedTextEditor {
         text = transformedText + matcher.renderMask(resetMask: false)
 
         return newCursorPosition
+    }
+
+    public func extractedText(from position: Int, length: Int) -> String {
+        let left = transformedText.left(upperBound: position)
+        let copied = transformedText.substring(from: position, length: length)
+        guard let _ = try? matcher.match(sample: left), let extractResult = try? matcher.extract(from: copied, resetMask: false) else {
+            return ""
+        }
+        switch extractResult {
+        case .complete(let extract), .partial(let extract):
+            return extract
+        }
     }
 
 }

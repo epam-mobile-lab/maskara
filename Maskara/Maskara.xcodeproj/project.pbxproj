@@ -98,6 +98,8 @@
 				0C7B4CE522AAA0EF00E6DE0B /* Mask.swift */,
 				0C7B4CE922AAA19B00E6DE0B /* TextualMask.swift */,
 				0C7B4CE322A96D3500E6DE0B /* MaskMatcher.swift */,
+				0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */,
+				0CDBC7EB22AEC974005F984E /* StringManipulation.swift */,
 				0C7B4CE722AAA16200E6DE0B /* Array+SimpleIterator.swift */,
 				0C7B4CC622A968EC00E6DE0B /* Maskara.h */,
 				0C7B4CC722A968EC00E6DE0B /* Info.plist */,
@@ -127,8 +129,6 @@
 		0CDBC7EA22AE809F005F984E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				0CDBC7EB22AEC974005F984E /* StringManipulation.swift */,
-				0CDBC7ED22AFDDC1005F984E /* MaskedTextEditor.swift */,
 				0C7B4CEB22AE72C700E6DE0B /* MaskedTextField.swift */,
 			);
 			path = UI;

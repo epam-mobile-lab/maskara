@@ -55,19 +55,51 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
             return result
         }
 
-        text = editor.text
+        if text?.isEmpty ?? true {
+            text = editor.text
+        }
+
         if let cursorPosition = position(from: beginningOfDocument, offset: 0) {
             selectedTextRange = textRange(from: cursorPosition, to: cursorPosition)
         }
 
-        return result
+        return true
     }
     
     override open func deleteBackward() {
-        //TODO: just swallow
+        //TODO: just swallow?
     }
 
-    // MARK: -
+    override open func paste(_ sender: Any?) {
+        if let string = UIPasteboard.general.string, let selectedRange = self.selectedTextRange {
+            _ = textField(self, shouldChangeCharactersIn: normalizedRange(from: selectedRange), replacementString: string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines))
+        }
+    }
+
+    override open func copy(_ sender: Any?) {
+        if let selectedRange = self.selectedTextRange {
+            let range = normalizedRange(from: selectedRange)
+            let extract = editor?.extractedText(from: range.location, length: range.length) ?? ""
+            UIPasteboard.general.string = extract
+        }
+    }
+
+    override open func cut(_ sender: Any?) {
+        copy(nil)
+        if let selectedRange = self.selectedTextRange {
+            _ = textField(self, shouldChangeCharactersIn: normalizedRange(from: selectedRange), replacementString: "")
+        }
+    }
+
+    // MARK: - Implementation
+
+    internal final func normalizedRange(from textRange: UITextRange) -> NSRange {
+        let start = offset(from: beginningOfDocument, to: textRange.start)
+        let end = offset(from: beginningOfDocument, to: textRange.end)
+        return NSRange(location: min(start, end), length: abs(end - start))
+    }
+
+    // MARK: UITextFieldDelegate
 
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return internalDelegate?.textFieldShouldBeginEditing?(textField) ?? true

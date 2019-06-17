@@ -33,6 +33,8 @@ open class Mask {
         self.programState = self.program.getSimpleIterator()
     }
 
+    public var maskPlaceholderSymbol: Character = "_"
+
     final func getCurrentState() -> State {
         return programState.current() ?? .stop
     }
@@ -104,7 +106,7 @@ open class Mask {
     private final func render(maskState: State) -> Character? {
         switch maskState {
         case .number, .letter:
-            return "_" //TODO: add customization
+            return maskPlaceholderSymbol
         case .symbol(let char):
             return char
         case .or(let left, let right):

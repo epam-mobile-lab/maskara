@@ -11,6 +11,8 @@ import UIKit
 
 open class MaskedTextField: UITextField, UITextFieldDelegate {
 
+    private var editor: MaskedTextEditor?
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setup()
@@ -21,27 +23,30 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
         self.setup()
     }
 
-    func setup() {
+    private func setup() {
         autocorrectionType = .no
         super.delegate = self
     }
 
-    open var maskPattern: String? {
-        didSet {
-            guard let maskPattern = maskPattern, let editor = try? MaskedTextEditor(maskPattern: maskPattern) else {
-                self.editor = nil
-                return
-            }
-            self.editor = editor
-        }
+    public private(set) var maskPattern: String?
+
+    /// Sets the mask pattern for editing
+    ///
+    /// - Parameter mask: mask pattern string, like "+?D(DDD)DDD-DD-DD"
+    /// - Throws: throws MaskParser.MaskParserError in case of invalid mask pattern
+    open func setMaskPattern(mask: String) throws {
+        editor = try MaskedTextEditor(maskPattern: mask)
     }
 
-    private var editor: MaskedTextEditor?
-
+    /// Enum with clean data without mask chars
     public var extractedText: ExtractResult? {
         return editor?.extractedText
     }
 
+    /// If true allows to copy/cut clean data without mask chars into Pasteboard
+    public var copyExtracted: Bool = true
+
+    /// Error handler for handling invalid chars being inserted
     public var matchErrorHandler: ((Error)->Void)?
 
     override open var delegate: UITextFieldDelegate? {
@@ -83,8 +88,11 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
     override open func copy(_ sender: Any?) {
         if let selectedRange = self.selectedTextRange {
             let range = normalizedRange(from: selectedRange)
-            let extract = editor?.extractedText(from: range.location, length: range.length) ?? ""
-            UIPasteboard.general.string = extract
+            if copyExtracted {
+                UIPasteboard.general.string = editor?.extractedText(from: range.location, length: range.length) ?? ""
+                return
+            }
+            UIPasteboard.general.string = editor?.text.substring(from: range.location, length: range.length) ?? ""
         }
     }
 

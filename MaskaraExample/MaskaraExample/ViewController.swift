@@ -20,13 +20,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        maskara.delegate = self
-        maskara.maskPattern = "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X"
+        do {
+            try maskara.setMaskPattern(mask: "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X")
+            maskField.text = maskara.maskPattern
+        } catch let error {
+            maskField.text = "Unable to set mask: \(error)"
+            maskField.textColor = UIColor.red
+        }
+
         maskara.matchErrorHandler = { _ in
             AudioServicesPlaySystemSound(1103)
         }
 
-        maskField.text = maskara.maskPattern
+        maskara.delegate = self
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

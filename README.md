@@ -1,12 +1,29 @@
 # Maskara library
 [![GitHub](https://img.shields.io/github/license/epam-mobile-lab/maskara.svg)]() [![CocoaPods](https://img.shields.io/cocoapods/v/Maskara.svg)]() [![Carthage](https://img.shields.io/badge/Carthage-1.0-brightgreen.svg)]()
 
-Maskara library provides MaskedTextField class, subclass of UITextField which allows to control user input with generalized masked editor.
+Maskara library provides `MaskedTextField` class, subclass of `UITextField` which allows to control user input with generalized masked editor.
 
 ## Examples
-The project contains a bunch of unit tests illustrating underlying concept as well as example project: an iOS app, which demonstrates masked editing coupled with UITextField.
+The project contains a bunch of unit tests illustrating underlying concept as well as an example project: an iOS app which demonstrates masked editing with `UITextField` subclass.
 
-### Text editor ready to be used in UITextField
+### Masked text editing in UI
+```swift
+@IBOutlet weak var maskara: MaskedTextField!
+override func viewDidLoad() {
+    super.viewDidLoad()
+    do {
+        try maskara.setMaskPattern(mask: "+7|8(DDD)DDD-DD-DD")
+    } catch let error {
+        print("Unable to set mask: \(error)")
+    }
+    maskara.matchErrorHandler = { _ in
+        AudioServicesPlaySystemSound(1103)
+    }
+    maskara.delegate = self
+}
+```
+
+### Separate text editor class ready to be used with custom UITextField subclass
 ```swift
 let mask = "+?7|8(DDD)DDD-?DD-?DD"
 var editor = try MaskedTextEditor(maskPattern: mask)
@@ -38,14 +55,14 @@ Base class which allows sample matching in accordance with mask set as simple st
 It is not recommended to use `Mask` directly. To simplify mask creation there is `TextualMask` class inherited from `Mask`.
 
 ### TextualMask class
-Textual mask allows to create an object of `Mask` class using textual representation of mask. Textual mask is being compiled into an automata during object initialisation.
+`TextualMask` allows to create an object of `Mask` class using textual representation of mask. Textual mask is being compiled into an automata during object initialization.
 
 Allowed mask symbols:
 - `D` - numeric
 - `X` - letter
 - `?` - being preceded by any other valid expression makes it optional
 - `|` - being placed between two valid expressions makes them conditional. If left part does not match a character tested, there will be right part tested. Otherwise, the result of evaluation of the left part will be returned.
-- Symbols set as `allowedSymbolTokens` initialiser parameter will be treated “as is”. Default set is `["+", "-", " ", "(", ")"]`.
+- Symbols set as `allowedSymbolTokens` initialiser parameter will be treated “as is”. Default set is `["+", "-", " ", "(", ")", ".", "@", ":"]`.
 
 **Mask examples**
 
@@ -58,12 +75,12 @@ Allowed mask symbols:
 - `"-| "` matches `"-"` and `" "`, i.e. space character.
 - `"-| ?"` matches `"-"`, `" "` and an empty string.
 
-And now let us combine them all: mask `"+?7|8(DDD)DDD-| ?DD-| ?D|XD|X"` will match following sample strings: `""+7(123)456-78-90"`, `"8(123)456 78 90"`, `"7(123)4567890"` and `"7(123)45678-OK"`. But mask `"+7(DDD)DDD-DD-DD"` will only match strings like `"+7(812)123-45-67"` or `"+7(000)000-00-00"`.
+And now let us combine them all: `"DD?D?.DD?D?.DD?D?.DD?D?"` will match following sample strings `"0.0.0.0"`, `"192.168.1.1"` etc. Mask `"+?7|8(DDD)DDD-| ?DD-| ?D|XD|X"` will match `""+7(123)456-78-90"`, `"8(123)456 78 90"`, `"7(123)4567890"` and even `"7(123)45678-OK"`. But mask `"+7(DDD)DDD-DD-DD"` will only match strings like `"+7(812)123-45-67"`.
 
 ### MaskMatcher class
-`MaskMatcher` class provides high level service functions for handling samples using mask:
+`MaskMatcher` class provides high level service functions for testing samples using mask:
 - `match(sample:,resetMask:) throws` - returns `MatchResult` enum which is the result of testing of a sample string or throws.
-- `transform(sample:,resetMask:) throws` - returns a `String` which is the result of combining a sample given and the mask
+- `transform(sample:,resetMask:) throws` - returns a `String` which is the result of combining a sample given and the rendered mask.
 - `extract(from:,resetMask:)` - returns an `ExtractResult` enum which is the result of extracting meaningful symbols from [transformed] sample string.
 
 ## User interface
@@ -71,7 +88,7 @@ And now let us combine them all: mask `"+?7|8(DDD)DDD-| ?DD-| ?D|XD|X"` will mat
 `MaskedTextEditor` incapsulates all the details of editing the text field being controlled by mask. It does not depend on any UI framework, but it has interface which is suited for integration with UIKit (at the moment).
 
 ### MaskedTextField class
-`MaskedTextField: UITextField` contains an instance of `MaskedTextEditor` and supports strightforward interface for editing and getting data. Please refer the example included for the details.
+`MaskedTextField: UITextField` contains an instance of `MaskedTextEditor` and supports masked text editing, copying, pasting and cutting. Please refer the example included for the details.
 
 ## Roadmap
 

@@ -17,12 +17,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var maskField: UILabel!
 
+    let maskString = "+?7|8(DDD?)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X"
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         do {
-            try maskara.setMaskPattern(mask: "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X")
-            maskField.text = maskara.maskPattern
+            try maskara.setMaskPattern(mask: maskString)
+            maskField.text = maskString
         } catch let error {
             maskField.text = "Unable to set mask: \(error)"
             maskField.textColor = UIColor.red

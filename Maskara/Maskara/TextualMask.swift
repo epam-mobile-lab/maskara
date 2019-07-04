@@ -48,7 +48,7 @@ public final class MaskParser {
 
     private(set) var program = [Mask.State]()
 
-    public static let defaultSymbolTokens: [Character] = ["+", "-", " ", "(", ")"]
+    public static let defaultSymbolTokens: [Character] = ["+", "-", " ", "(", ")", ".", "@", ":"]
     public static let numberToken: Character = "D"
     public static let letterToken: Character = "X"
     public static let optionalToken: Character = "?"
@@ -61,11 +61,11 @@ public final class MaskParser {
     private let numbersAsCharacters: Bool
 
     init(pattern: String, options: [Option] = [.numbersAsCharacters], allowedSymbolTokens: [Character]? = nil) throws {
-        if let tokens = allowedSymbolTokens {
-            if tokens.reduce(false, { $0 && MaskParser.auxiliarySymbols.contains($1) }) {
+        if let allowed = allowedSymbolTokens {
+            if allowed.reduce(false, { $0 && MaskParser.auxiliarySymbols.contains($1) }) {
                 throw MaskParserError.illegalAllowedSymbols
             }
-            self.allowedSymbolTokens = tokens
+            self.allowedSymbolTokens = allowed
         } else {
             self.allowedSymbolTokens = MaskParser.defaultSymbolTokens
         }
@@ -138,7 +138,7 @@ public final class MaskParser {
                 throw MaskParserError.compilationError("Operator '|' should only be preceded by any valid expression")
             }
             guard let tok = iterator.next() else {
-                throw MaskParserError.compilationError("Operator '|' needs a right operand")
+                throw MaskParserError.compilationError("Operator '|' needs right operand")
             }
             _ = try evaluate(stack: &stack, token: tok, iterator: iterator)
             if let rightNode = stack.popLast() {

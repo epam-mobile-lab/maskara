@@ -29,21 +29,35 @@ open class MaskedTextEditor {
         self.text = matcher.renderMask()
     }
 
+    /// Tries to replace a substring in `self.text` starting from `position` and of `length`
+    /// with `replacementString` in accordance with mask given.
+    /// 
+    /// The remainings of the `self.text` will be shifted if possible.
+    /// All the optional mask symbols in shifted part will be lost in the shift.
+    /// Mimics `UITextField` behaviour, i.e. uses the function for all type of editing:
+    ///   - inserting and replacing are strightforward
+    ///   - deleting is a replacement of a substring of length `length` with an empty string from `position`
+    ///
+    /// - Parameters:
+    ///   - position: starting position for replacement.
+    ///   - length: a length of a substring being replaced
+    ///   - string: the replacement being inserted starting from `position`
+    /// - Returns: new position for a [sequential] insertion, i.e. literaly a "cursor" position
+    /// - Throws: throws MaskMatcher.MatchError if insertion is invalid
     public func replace(from position: Int, length: Int, replacementString string: String) throws -> Int {
 
-        let (left, right) = transformedText.split(from: position, length: length)
+        let (left, _) = text.split(from: position, length: length)
+        let (_, right) = transformedText.split(from: position, length: length)
 
         // Dry run on the left side (including part which is about to be changed),
         // should always be ok since 'left' is already in text, so just move state to a proper position
-        _ = try matcher.match(sample: transformedText.left(upperBound: position + length))
+        _ = try matcher.match(sample: text.left(upperBound: position + length))
 
         // try extract the real data from right remainings before it is being shifted
         var newRight = ""
-        if let extractResult = try? matcher.extract(from: right, resetMask: false) {
-            switch extractResult {
-            case .complete(let extract), .partial(let extract):
-                newRight = extract
-            }
+        switch try matcher.extract(from: right, resetMask: false)  {
+        case .complete(let extract), .partial(let extract):
+            newRight = extract
         }
 
         // transfrom to text with inserted value and get the cursor position

@@ -28,14 +28,13 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
         super.delegate = self
     }
 
-    public private(set) var maskPattern: String?
-
     /// Sets the mask pattern for editing
     ///
     /// - Parameter mask: mask pattern string, like "+?D(DDD)DDD-DD-DD"
     /// - Throws: throws MaskParser.MaskParserError in case of invalid mask pattern
     open func setMaskPattern(mask: String) throws {
         editor = try MaskedTextEditor(maskPattern: mask)
+        text = editor?.text
     }
 
     /// Enum with clean data without mask chars
@@ -76,7 +75,7 @@ open class MaskedTextField: UITextField, UITextFieldDelegate {
     }
     
     override open func deleteBackward() {
-        //TODO: just swallow?
+        //just swallow
     }
 
     override open func paste(_ sender: Any?) {

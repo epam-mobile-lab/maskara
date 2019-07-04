@@ -17,9 +17,12 @@ class MaskaraEditorTests: QuickSpec {
 
         let mask = "+?7|8(DDD)D|XD|XD|X-| ?D|XD|X-| ?D|XD|X"
         var editor: MaskedTextEditor!
+        let ip4Mask = "DD?D?.DD?D?.DD?D?.DD?D?"
+        var ip4Editor: MaskedTextEditor!
 
         beforeEach {
             editor = try! MaskedTextEditor(maskPattern: mask)
+            ip4Editor = try! MaskedTextEditor(maskPattern: ip4Mask)
         }
 
         describe("Editor") {
@@ -31,9 +34,11 @@ class MaskaraEditorTests: QuickSpec {
             }
             
             it("should allow input") {
-                var position = try! editor.replace(from: 0, length: 0, replacementString: "1")
-                position = try! editor.replace(from: position, length: 0, replacementString: "2")
-                position = try! editor.replace(from: position, length: 0, replacementString: "3")
+                var position = try? editor.replace(from: 0, length: 0, replacementString: "1")
+                expect(position).to(equal(3))
+                position = try? editor.replace(from: 3, length: 0, replacementString: "2")
+                expect(position).to(equal(4))
+                position = try? editor.replace(from: 4, length: 0, replacementString: "3")
                 expect(editor.text).to(equal("7(123)_______"))
                 expect(position).to(equal(5))
                 let plusPosition = try? editor.replace(from: 0, length: 0, replacementString: "+")
@@ -48,17 +53,27 @@ class MaskaraEditorTests: QuickSpec {
             }
 
             it("should allow insertion before symbolic element") {
-                var position = try! editor.replace(from: 0, length: 0, replacementString: "123")
-                position = try! editor.replace(from: position, length: 0, replacementString: "4")
+                var position = try? editor.replace(from: 0, length: 0, replacementString: "123")
+                expect(position).to(equal(5))
+                position = try? editor.replace(from: 5, length: 0, replacementString: "4")
                 expect(editor.text).to(equal("7(123)4______"))
                 expect(position).to(equal(7))
+            }
+
+            it("should allow optionals to be surrounded by symbols") {
+                var position = try? ip4Editor.replace(from: 0, length: 0, replacementString: "12")
+                expect(position).to(equal(2))
+                expect(ip4Editor.text).to(equal("12._._._"))
+                position = try? ip4Editor.replace(from: 3, length: 0, replacementString: "3")
+                expect(ip4Editor.text).to(equal("12.3._._"))
+                expect(position).to(equal(4))
             }
             
             it("should allow deletion from arbitrary position") {
                 var position = try? editor.replace(from: 0, length: 0, replacementString: "1234")
                 expect(editor.text).to(equal("7(123)4______"))
                 expect(position).to(equal(7))
-                position = try! editor.replace(from: 4, length: 1, replacementString: "")
+                position = try? editor.replace(from: 4, length: 1, replacementString: "")
                 expect(editor.text).to(equal("7(124)_______"))
                 expect(position).to(equal(4))
             }
@@ -66,7 +81,7 @@ class MaskaraEditorTests: QuickSpec {
             it("should allow massive deletion from arbitrary position") {
                 var position = try? editor.replace(from: 0, length: 0, replacementString: "123456")
                 expect(editor.text).to(equal("7(123)456____"))
-                position = try! editor.replace(from: 4, length: 4, replacementString: "")
+                position = try? editor.replace(from: 4, length: 4, replacementString: "")
                 expect(editor.text).to(equal("7(126)_______"))
                 expect(position).to(equal(4))
             }
@@ -88,17 +103,17 @@ class MaskaraEditorTests: QuickSpec {
             }
 
             it("should not allow illegal symbols") {
-                let position = try! editor.replace(from: 0, length: 0, replacementString: "1")
+                let position = try? editor.replace(from: 0, length: 0, replacementString: "1")
                 expect(editor.text).to(equal("7(1__)_______"))
                 expect(position).to(equal(3))
-                expect { try editor.replace(from: position, length: 0, replacementString: "A") }.to(throwError())
+                expect { try editor.replace(from: 3, length: 0, replacementString: "A") }.to(throwError())
             }
 
             it("should allow extraction") {
                 _ = try? editor.replace(from: 0, length: 0, replacementString: "123456")
                 expect(editor.text).to(equal("7(123)456____"))
                 expect(editor.extractedText).to(beExtractPartial("123456"))
-                _ = try! editor.replace(from: 4, length: 4, replacementString: "")
+                _ = try? editor.replace(from: 4, length: 4, replacementString: "")
                 expect(editor.text).to(equal("7(126)_______"))
                 expect(editor.extractedText).to(beExtractPartial("126"))
                 _ = try? editor.replace(from: 0, length: 0, replacementString: "1234567890")
